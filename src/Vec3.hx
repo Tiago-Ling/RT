@@ -6,6 +6,22 @@ abstract Vec3(Array<Float>) {
         this[3] = w;
     }
 
+    public function set(x:Float = 0.0, y:Float = 0.0, z:Float = 0.0, w:Float = 0.0):Vec3 {
+        this[0] = x;
+        this[1] = y;
+        this[2] = z;
+        this[3] = w;
+        return this;
+    }
+
+    public function dot(other:Vec3):Float {
+        return this[0] * other.x + this[1] * other.y + this[2] * other.z;
+    }
+
+    public function cross(other:Vec3):Vec3 {
+        return new Vec3(this[1] * other.z - this[2] * other.y, this[2] * other.x - this[0] * other.z, this[0] * other.y - this[1] * other.x, 1);
+    }
+
     @:op(A + B)
     public function add(other:Vec3):Vec3 {
         return new Vec3(
