@@ -3,6 +3,8 @@
 	
 	<meta title="RayTracer" package="com.sample.raytracer" version="1.0.0" company="Company Name" />
 	<app main="Main" path="Export" file="RayTracer" />
+
+	<window width="1280" height="720" fps="60" />
 	
 	<source path="Source" />
 	

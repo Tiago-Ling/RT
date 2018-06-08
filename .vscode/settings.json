@@ -1,0 +1,10 @@
+{
+    "haxe.displayConfigurations": [
+        ["Export/html5/haxe/debug.hxml"]
+    ],
+    "haxe.displayServer": {
+        "arguments": [
+            "-v"
+        ]
+    }
+}
