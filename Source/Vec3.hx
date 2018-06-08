@@ -1,5 +1,6 @@
 abstract Vec3(Array<Float>) {
     inline public function new(x:Float = 0.0, y:Float = 0.0, z:Float = 0.0, w:Float = 0.0) {
+        this = new Array<Float>();
         this[0] = x;
         this[1] = y;
         this[2] = z;
@@ -11,7 +12,7 @@ abstract Vec3(Array<Float>) {
         this[1] = y;
         this[2] = z;
         this[3] = w;
-        return this;
+        return new Vec3(x, y, z, w);
     }
 
     public function dot(other:Vec3):Float {
@@ -23,7 +24,7 @@ abstract Vec3(Array<Float>) {
     }
 
     public function normalize():Vec3 {
-        return this / this.length;
+        return divide(this.length);
     }
 
     @:op(A + B)
@@ -46,7 +47,8 @@ abstract Vec3(Array<Float>) {
         );
     }
 
-    @:op(A * B) @:commutative
+    @:op(A * B)
+    @:commutative
     public function mult(scalar:Float):Vec3 {
         return new Vec3(
             this[0] * scalar,
@@ -68,22 +70,22 @@ abstract Vec3(Array<Float>) {
 
     @:op(A += B)
     public function addAssign(other:Vec3):Vec3 {
-        return this + other;
+        return add(other);
     }
 
     @:op(A -= B)
     public function subAssign(other:Vec3):Vec3 {
-        return this - other;
+        return sub(other);
     }
 
     @:op(A *= B)
     public function multAssign(scalar:Float):Vec3 {
-        return this * scalar;
+        return mult(scalar);
     }
     
     @:op(A /= B)
     public function divAssign(divisor:Float):Vec3 {
-        return this / divisor;
+        return divide(divisor);
     }
 
     @:keep
