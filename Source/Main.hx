@@ -6,8 +6,8 @@ import openfl.display.Sprite;
 
 class Main extends Sprite {
 	
-	var nx:Int = 1280;
-	var ny:Int = 720;
+	var nx:Int = 600;
+	var ny:Int = 300;
 	var data:openfl.display.BitmapData;
 
 	public function new () {
@@ -17,6 +17,7 @@ class Main extends Sprite {
 		data = new openfl.display.BitmapData(nx, ny, false, 0xFF000000);
 
 		generateBackground();
+		// printTestImage();
 
 		var bmp = new openfl.display.Bitmap(data);
 		bmp.x = stage.stageWidth / 2 - nx / 2;
@@ -32,37 +33,36 @@ class Main extends Sprite {
 		var vertical:Vec3 = new Vec3(0.0, 2.0, 0.0);
 		var origin:Vec3 = new Vec3(0.0, 0.0, 0.0);
 
-		var j:Int = ny - 1;
-		while (j >= 0) {
+		for (j in 0...ny) {
+			var v = ny - j;
 			for (i in 0...nx) {
 				var u:Float = cast(i, Float) / cast(nx, Float);
-				var v:Float = cast(j, Float) / cast(ny, Float);
+				var v:Float = cast(v, Float) / cast(ny, Float);
 				var r = new Ray(origin, lowerLeftCorner + horizontal * u + vertical * v);
 				var col = color(r);
-				var ir:Int = Std.int(255.99 * col.x);
-				var ig:Int = Std.int(255.99 * col.y);
-				var ib:Int = Std.int(255.99 * col.z);
+				var ir:Int = Math.floor(255.99 * col.x);
+				var ig:Int = Math.floor(255.99 * col.y);
+				var ib:Int = Math.floor(255.99 * col.z);
 				data.setPixel32(i, j, rgbToHex(ir, ig, ib));
 			}
-			j--;
 		}
 	}
 
 	function printTestImage() {
-		var j:Int = ny - 1;
-		while (j >= 0) {
+		for (j in 0...ny) {
+			var v = ny - j;
 			for (i in 0...nx) {
 				var col = new Vec3(
-					cast(i, Float) / cast(nx, Float),
-					cast(j, Float) / cast(ny, Float),
-					0.2
+					i / nx,
+					v / ny,
+					0.2,
+					0.0
 				);
-				var ir:Int = Std.int(255.99 * col.x);
-				var ig:Int = Std.int(255.99 * col.y);
-				var ib:Int = Std.int(255.99 * col.z);
+				var ir:Int = Math.floor(255.999 * col.x);
+				var ig:Int = Math.floor(255.999 * col.y);
+				var ib:Int = Math.floor(255.999 * col.z);
 				data.setPixel32(i, j, rgbToHex(ir, ig, ib));
 			}
-			j--;
 		}
 	}
 
