@@ -58,9 +58,9 @@ class Main extends Sprite {
 					0.2,
 					0.0
 				);
-				var ir:Int = Math.floor(255.999 * col.x);
-				var ig:Int = Math.floor(255.999 * col.y);
-				var ib:Int = Math.floor(255.999 * col.z);
+				var ir:Int = Math.floor(255.99 * col.x);
+				var ig:Int = Math.floor(255.99 * col.y);
+				var ib:Int = Math.floor(255.99 * col.z);
 				data.setPixel32(i, j, rgbToHex(ir, ig, ib));
 			}
 		}
@@ -73,20 +73,20 @@ class Main extends Sprite {
 	function color(r:Ray):Vec3 {
 		var t:Float = hitSphere(new Vec3(0, 0, -1), 0.5, r);
 		if (t > 0.0) {
-			var N:Vec3 = (r.pointAt(t) - new Vec3(0, 0, -1)).normalize();
+			var N:Vec3 = Vec3.normalize(r.pointAt(t) - new Vec3(0, 0, -1));
 			return new Vec3(N.x + 1, N.y + 1, N.z + 1) * 0.5;
 		}
 
-		var normalizedDir = r.direction.normalize();
+		var normalizedDir = Vec3.normalize(r.direction);
 		var t:Float = 0.5 * (normalizedDir.y + 1.0);
 		return new Vec3(1.0, 1.0, 1.0) * (1.0 - t) + new Vec3(0.5, 0.7, 1.0) * t;
 	}
 
 	function hitSphere(center:Vec3, radius:Float, r:Ray):Float {
 		var oc:Vec3 = r.origin - center;
-		var a:Float = r.direction.dot(r.direction);
-		var b:Float = oc.dot(r.direction) * 2.0;
-		var c:Float = oc.dot(oc) - radius * radius;
+		var a:Float = Vec3.dot(r.direction, r.direction);
+		var b:Float = Vec3.dot(oc, r.direction) * 2.0;
+		var c:Float = Vec3.dot(oc, oc) - radius * radius;
 		var discriminant:Float = b * b - 4 * a * c;
 		if (discriminant < 0) {
 			return -1.0;

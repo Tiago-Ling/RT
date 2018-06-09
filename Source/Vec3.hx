@@ -15,16 +15,17 @@ abstract Vec3(Array<Float>) {
         return new Vec3(x, y, z, w);
     }
 
-    public function dot(other:Vec3):Float {
-        return this[0] * other.x + this[1] * other.y + this[2] * other.z;
+    public static function dot(a:Vec3, b:Vec3):Float {
+        return a.x * b.x + a.y * b.y + a.z * b.z;
     }
 
-    public function cross(other:Vec3):Vec3 {
-        return new Vec3(this[1] * other.z - this[2] * other.y, this[2] * other.x - this[0] * other.z, this[0] * other.y - this[1] * other.x, 1);
+    public static function cross(a:Vec3, b:Vec3):Vec3 {
+        return new Vec3(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x, 1);
     }
 
-    public function normalize():Vec3 {
-        return divide(this.length);
+    public static function normalize(a:Vec3):Vec3 {
+        var l = a.length;
+        return a / l;
     }
 
     @:op(A + B)
