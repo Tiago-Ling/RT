@@ -1,3 +1,5 @@
+package;
+
 class Ray {
     public var origin:Vec3;
     public var direction:Vec3;

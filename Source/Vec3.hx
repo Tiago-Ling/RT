@@ -15,6 +15,14 @@ abstract Vec3(Array<Float>) {
         return new Vec3(x, y, z, w);
     }
 
+    public function copy():Vec3 {
+        return new Vec3(x, y, z, w);
+    }
+
+    public function toString():String {
+        return Std.string('(' + x + ', ' + y + ', ' + z + ', ' + ', ' + w + ')');
+    }
+
     public static function dot(a:Vec3, b:Vec3):Float {
         return a.x * b.x + a.y * b.y + a.z * b.z;
     }
