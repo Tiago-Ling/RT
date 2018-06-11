@@ -8,6 +8,11 @@ class Main extends Sprite {
 	
 	var nx:Int = 600;
 	var ny:Int = 300;
+	var lowerLeftCorner:Vec3 = new Vec3(-2.0, -1.0, -1.0);
+	var horizontal:Vec3 = new Vec3(4.0, 0.0, 0.0);
+	var vertical:Vec3 = new Vec3(0.0, 2.0, 0.0);
+	var origin:Vec3 = new Vec3(0.0, 0.0, 0.0);
+	var world:HitableList;
 	var data:openfl.display.BitmapData;
 
 	public function new () {
@@ -16,7 +21,7 @@ class Main extends Sprite {
 
 		data = new openfl.display.BitmapData(nx, ny, false, 0xFF000000);
 
-		generateBackground();
+		generateSpheres();
 		// printTestImage();
 
 		var bmp = new openfl.display.Bitmap(data);
@@ -27,19 +32,17 @@ class Main extends Sprite {
 		
 	}
 
-	function generateBackground() {
-		var lowerLeftCorner:Vec3 = new Vec3(-2.0, -1.0, -1.0);
-		var horizontal:Vec3 = new Vec3(4.0, 0.0, 0.0);
-		var vertical:Vec3 = new Vec3(0.0, 2.0, 0.0);
-		var origin:Vec3 = new Vec3(0.0, 0.0, 0.0);
-
+	function generateSpheres() {
+		world = new HitableList();
+		world.add(new Sphere(new Vec3(0, 0, -1), 0.5));
+		world.add(new Sphere(new Vec3(0, -100.5, -1), 100));
 		for (j in 0...ny) {
 			var v = ny - j;
 			for (i in 0...nx) {
 				var u:Float = cast(i, Float) / cast(nx, Float);
 				var v:Float = cast(v, Float) / cast(ny, Float);
 				var r = new Ray(origin, lowerLeftCorner + horizontal * u + vertical * v);
-				var col = color(r);
+				var col = color(r, world);
 				var ir:Int = Math.floor(255.99 * col.x);
 				var ig:Int = Math.floor(255.99 * col.y);
 				var ib:Int = Math.floor(255.99 * col.z);
@@ -70,16 +73,15 @@ class Main extends Sprite {
 		return (a & 0xFF) << 24 | (r & 0xFF) << 16 | (g & 0xFF) << 8 | (b & 0xFF);
 	}
 	
-	function color(r:Ray):Vec3 {
-		var t:Float = hitSphere(new Vec3(0, 0, -1), 0.5, r);
-		if (t > 0.0) {
-			var N:Vec3 = Vec3.normalize(r.pointAt(t) - new Vec3(0, 0, -1));
-			return new Vec3(N.x + 1, N.y + 1, N.z + 1) * 0.5;
+	function color(r:Ray, world:Hitable):Vec3 {
+		var rec:HitRecord = world.hit(r, 0.0, Math.POSITIVE_INFINITY);
+		if (rec != null) {
+			return new Vec3(rec.normal.x + 1.0, rec.normal.y + 1.0, rec.normal.z + 1.0) * 0.5;
+		} else {
+			var normalizedDir:Vec3 = Vec3.normalize(r.direction);
+			var t:Float = (normalizedDir.y + 1.0) * 0.5;
+			return new Vec3(1.0, 1.0, 1.0) * (1.0 - t) + new Vec3(0.5, 0.7, 1.0) * t;
 		}
-
-		var normalizedDir = Vec3.normalize(r.direction);
-		var t:Float = 0.5 * (normalizedDir.y + 1.0);
-		return new Vec3(1.0, 1.0, 1.0) * (1.0 - t) + new Vec3(0.5, 0.7, 1.0) * t;
 	}
 
 	function hitSphere(center:Vec3, radius:Float, r:Ray):Float {
