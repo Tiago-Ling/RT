@@ -10,7 +10,7 @@ class Sphere implements Hitable {
     }
 
     public function hit(r:Ray, tMin:Float, tMax:Float):HitRecord {
-        var oc:Vec3 = r.origin = center;
+        var oc:Vec3 = r.origin - center;
         var a:Float = Vec3.dot(r.direction, r.direction);
         var b:Float = Vec3.dot(oc, r.direction);
         var c:Float = Vec3.dot(oc, oc) - radius * radius;
@@ -21,19 +21,19 @@ class Sphere implements Hitable {
             if (temp < tMax && temp > tMin) {
                 rec = new HitRecord();
                 rec.t = temp;
-                rec.p = r.pointAt(rec.t);
+                rec.p = r.pointAt(temp);
                 rec.normal = (rec.p - center) / radius;
-                // return true;
+                return rec;
             }
             temp = (-b + Math.sqrt(b * b - a * c)) / a;
             if (temp < tMax && temp > tMin) {
                 rec = new HitRecord();
                 rec.t = temp;
-                rec.p = r.pointAt(rec.t);
+                rec.p = r.pointAt(temp);
                 rec.normal = (rec.p - center) / radius;
-                // return true;
+                return rec;
             }
         }
-        return rec;
+        return null;
     }
 }

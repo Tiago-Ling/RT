@@ -19,9 +19,10 @@ class HitableList implements Hitable {
         var closestSoFar:Float = tMax;
         var rec:HitRecord = null;
         for (i in 0...list.length) {
-            rec = list[i].hit(r, tMin, closestSoFar);
-            if (rec != null) {
-                closestSoFar = rec.t;
+            var tempRec = list[i].hit(r, tMin, closestSoFar);
+            if (tempRec != null) {
+                closestSoFar = tempRec.t;
+                rec = tempRec;
             }
         }
         return rec;
