@@ -23,6 +23,10 @@ abstract Vec3(Array<Float>) {
         return Std.string('(' + x + ', ' + y + ', ' + z + ', ' + ', ' + w + ')');
     }
 
+    public static function multVec(a:Vec3, b:Vec3):Vec3 {
+        return new Vec3(a.x * b.x, a.y * b.y, a.z * b.z);
+    }
+
     public static function dot(a:Vec3, b:Vec3):Float {
         return a.x * b.x + a.y * b.y + a.z * b.z;
     }

@@ -10,10 +10,11 @@ class Lambertian implements Material {
         albedo = a;
     }
 
-    public function scatter(inRay:Ray, rec:HitRecord, attenuation:Vec3, scattered:Ray):Bool {
+    public function scatter(inRay:Ray, rec:HitRecord):ScatterRecord {
         var target:Vec3 = rec.p + rec.normal + Utils.randomPointInUnitSphere();
-        scattered = new Ray(rec.p, target - rec.p);
-        attenuation = albedo;
-        return true;
+        var scatterRec = new ScatterRecord();
+        scatterRec.scattered = new Ray(rec.p, target - rec.p);
+        scatterRec.attenuation = albedo;
+        return scatterRec;
     }
 }

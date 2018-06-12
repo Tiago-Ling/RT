@@ -7,10 +7,14 @@ class Metal implements Material {
         albedo = a;
     }
 
-    public function scatter(inRay:Ray, rec:HitRecord, attenuation:Vec3, scattered:Ray):Bool {
+    public function scatter(inRay:Ray, rec:HitRecord):ScatterRecord {
         var reflected:Vec3 = Vec3.reflect(Vec3.normalize(inRay.direction), rec.normal);
-        scattered = new Ray(rec.p, reflected);
-        attenuation = albedo;
-        return (Vec3.dot(scattered.direction, rec.normal) > 0.0);
+        var scatterRec = new ScatterRecord();
+        scatterRec.scattered = new Ray(rec.p, reflected);
+        scatterRec.attenuation = albedo;
+        if (Vec3.dot(scatterRec.scattered.direction, rec.normal) > 0.0)
+            return scatterRec;
+
+        return null;
     }
 }

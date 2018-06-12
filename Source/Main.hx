@@ -35,8 +35,10 @@ class Main extends Sprite {
 	function generateSpheres() {
 		camera = new Camera();
 		world = new HitableList();
-		world.add(new Sphere(new Vec3(0, 0, -1), 0.5));
-		world.add(new Sphere(new Vec3(0, -100.5, -1), 100));
+		world.add(new Sphere(new Vec3(0, 0, -1), 0.5, new Lambertian(new Vec3(0.8, 0.3, 0.3))));
+		world.add(new Sphere(new Vec3(0, -100.5, -1), 100, new Lambertian(new Vec3(0.8, 0.8, 0.0))));
+		world.add(new Sphere(new Vec3(1, 0.0, -1), 0.5, new Metal(new Vec3(0.8, 0.6, 0.2))));
+		world.add(new Sphere(new Vec3(-1, 0.0, -1), 0.5, new Metal(new Vec3(0.8, 0.8, 0.8))));
 		for (j in 0...ny) {
 			var v = ny - j;
 			for (i in 0...nx) {
@@ -46,7 +48,7 @@ class Main extends Sprite {
 					var v:Float = cast((v + Math.random()), Float) / cast(ny, Float);
 					var r = camera.getRay(u, v);
 					var p:Vec3 = r.pointAt(2.0);
-					col += color(r, world);	
+					col += color(r, world, 0);	
 				}
 				col /= cast(ns, Float);
 				col = new Vec3(Math.sqrt(col.x), Math.sqrt(col.y), Math.sqrt(col.z)); //Gamma correction (1/2)
@@ -58,11 +60,15 @@ class Main extends Sprite {
 		}
 	}
 	
-	function color(r:Ray, world:Hitable):Vec3 {
+	function color(r:Ray, world:Hitable, depth:Int):Vec3 {
 		var rec:HitRecord = world.hit(r, 0.001, Math.POSITIVE_INFINITY);
 		if (rec != null) {
-			var target:Vec3 = rec.p + rec.normal + Utils.randomPointInUnitSphere();
-			return color(new Ray(rec.p, target - rec.p), world) * 0.5;
+			var scatterRec:ScatterRecord = rec.matRef.scatter(r, rec);
+			if (depth < 50 && scatterRec != null) {
+				return Vec3.multVec(scatterRec.attenuation, color(scatterRec.scattered, world, depth + 1));
+			} else {
+				return new Vec3(0.0, 0.0, 0.0);
+			}
 		} else {
 			var normalizedDir:Vec3 = Vec3.normalize(r.direction);
 			var t:Float = (normalizedDir.y + 1.0) * 0.5;

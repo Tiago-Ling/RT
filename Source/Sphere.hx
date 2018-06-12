@@ -3,10 +3,12 @@ package ;
 class Sphere implements Hitable {
     public var center:Vec3;
     public var radius:Float;
+    public var material:Material;
 
-    public function new(center:Vec3, radius:Float) {
+    public function new(center:Vec3, radius:Float, material:Material) {
         this.center = center;
         this.radius = radius;
+        this.material = material;
     }
 
     public function hit(r:Ray, tMin:Float, tMax:Float):HitRecord {
@@ -23,6 +25,7 @@ class Sphere implements Hitable {
                 rec.t = temp;
                 rec.p = r.pointAt(temp);
                 rec.normal = (rec.p - center) / radius;
+                rec.matRef = material;
                 return rec;
             }
             temp = (-b + Math.sqrt(b * b - a * c)) / a;
@@ -31,6 +34,7 @@ class Sphere implements Hitable {
                 rec.t = temp;
                 rec.p = r.pointAt(temp);
                 rec.normal = (rec.p - center) / radius;
+                rec.matRef = material;
                 return rec;
             }
         }
