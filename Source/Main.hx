@@ -6,9 +6,10 @@ import openfl.display.Sprite;
 
 class Main extends Sprite {
 	
-	var nx:Int = 600;
-	var ny:Int = 300;
+	var nx:Int = 300;
+	var ny:Int = 150;
 	var ns:Int = 100;
+	var scale:Float = 2.0;
 	var camera:Camera;
 	var world:HitableList;
 	var data:openfl.display.BitmapData;
@@ -23,8 +24,9 @@ class Main extends Sprite {
 		// printTestImage();
 
 		var bmp = new openfl.display.Bitmap(data);
-		bmp.x = stage.stageWidth / 2 - nx / 2;
-		bmp.y = stage.stageHeight / 2 - ny / 2;
+		bmp.scaleX = bmp.scaleY = scale;
+		bmp.x = stage.stageWidth / 2 - (nx * scale) / 2;
+		bmp.y = stage.stageHeight / 2 - (ny * scale) / 2;
 		
 		addChild(bmp);
 		
