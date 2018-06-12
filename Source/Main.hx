@@ -62,12 +62,21 @@ class Main extends Sprite {
 	function color(r:Ray, world:Hitable):Vec3 {
 		var rec:HitRecord = world.hit(r, 0.0, Math.POSITIVE_INFINITY);
 		if (rec != null) {
-			return new Vec3(rec.normal.x + 1.0, rec.normal.y + 1.0, rec.normal.z + 1.0) * 0.5;
+			var target:Vec3 = rec.p + rec.normal + randomPointInUnitSphere();
+			return color(new Ray(rec.p, target - rec.p), world) * 0.5;
 		} else {
 			var normalizedDir:Vec3 = Vec3.normalize(r.direction);
 			var t:Float = (normalizedDir.y + 1.0) * 0.5;
 			return new Vec3(1.0, 1.0, 1.0) * (1.0 - t) + new Vec3(0.5, 0.7, 1.0) * t;
 		}
+	}
+
+	function randomPointInUnitSphere():Vec3 {
+		var p:Vec3 = null;
+		do {
+			p = new Vec3(Math.random(), Math.random(), Math.random()) * 2.0 - new Vec3(1.0, 1.0, 1.0);
+		} while(p.lengthSquared >= 1.0);
+		return p;
 	}
 
 	function printTestImage() {
