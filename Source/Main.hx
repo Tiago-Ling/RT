@@ -8,10 +8,8 @@ class Main extends Sprite {
 	
 	var nx:Int = 600;
 	var ny:Int = 300;
-	var lowerLeftCorner:Vec3 = new Vec3(-2.0, -1.0, -1.0);
-	var horizontal:Vec3 = new Vec3(4.0, 0.0, 0.0);
-	var vertical:Vec3 = new Vec3(0.0, 2.0, 0.0);
-	var origin:Vec3 = new Vec3(0.0, 0.0, 0.0);
+	var ns:Int = 100;
+	var camera:Camera;
 	var world:HitableList;
 	var data:openfl.display.BitmapData;
 
@@ -33,16 +31,22 @@ class Main extends Sprite {
 	}
 
 	function generateSpheres() {
+		camera = new Camera();
 		world = new HitableList();
 		world.add(new Sphere(new Vec3(0, 0, -1), 0.5));
 		world.add(new Sphere(new Vec3(0, -100.5, -1), 100));
 		for (j in 0...ny) {
 			var v = ny - j;
 			for (i in 0...nx) {
-				var u:Float = cast(i, Float) / cast(nx, Float);
-				var v:Float = cast(v, Float) / cast(ny, Float);
-				var r = new Ray(origin, lowerLeftCorner + horizontal * u + vertical * v);
-				var col = color(r, world);
+				var col:Vec3 = new Vec3(0.0, 0.0, 0.0);
+				for (s in 0...ns) {
+					var u:Float = cast((i + Math.random()), Float) / cast(nx, Float);
+					var v:Float = cast((v + Math.random()), Float) / cast(ny, Float);
+					var r = camera.getRay(u, v);
+					var p:Vec3 = r.pointAt(2.0);
+					col += color(r, world);	
+				}
+				col /= cast(ns, Float);
 				var ir:Int = Math.floor(255.99 * col.x);
 				var ig:Int = Math.floor(255.99 * col.y);
 				var ib:Int = Math.floor(255.99 * col.z);
