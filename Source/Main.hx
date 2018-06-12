@@ -35,10 +35,11 @@ class Main extends Sprite {
 	function generateSpheres() {
 		camera = new Camera();
 		world = new HitableList();
-		world.add(new Sphere(new Vec3(0, 0, -1), 0.5, new Lambertian(new Vec3(0.8, 0.3, 0.3))));
+		world.add(new Sphere(new Vec3(0, 0, -1), 0.5, new Lambertian(new Vec3(0.1, 0.2, 0.5))));
 		world.add(new Sphere(new Vec3(0, -100.5, -1), 100, new Lambertian(new Vec3(0.8, 0.8, 0.0))));
 		world.add(new Sphere(new Vec3(1, 0.0, -1), 0.5, new Metal(new Vec3(0.8, 0.6, 0.2), 0.3)));
-		world.add(new Sphere(new Vec3(-1, 0.0, -1), 0.5, new Metal(new Vec3(0.8, 0.8, 0.8), 1.0)));
+		world.add(new Sphere(new Vec3(-1, 0.0, -1), 0.5, new Dieletric(1.5)));
+		world.add(new Sphere(new Vec3(-1, 0.0, -1), -0.45, new Dieletric(1.5)));
 		for (j in 0...ny) {
 			var v = ny - j;
 			for (i in 0...nx) {
