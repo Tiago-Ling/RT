@@ -31,6 +31,10 @@ abstract Vec3(Array<Float>) {
         return new Vec3(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x, 1);
     }
 
+    public static function reflect(v:Vec3, n:Vec3):Vec3 {
+        return v - n * 2 * dot(v, n);
+    }
+
     public static function normalize(a:Vec3):Vec3 {
         var l = a.length;
         return a / l;

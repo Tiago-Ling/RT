@@ -4,6 +4,7 @@ class HitRecord {
     public var t:Float;
     public var p:Vec3;
     public var normal:Vec3;
+    public var matRef:Material;
 
     public function new () {}
 
