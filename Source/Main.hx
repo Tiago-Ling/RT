@@ -53,50 +53,20 @@ class Main extends Sprite {
 				var ir:Int = Math.floor(255.99 * col.x);
 				var ig:Int = Math.floor(255.99 * col.y);
 				var ib:Int = Math.floor(255.99 * col.z);
-				data.setPixel32(i, j, rgbToHex(ir, ig, ib));
+				data.setPixel32(i, j, Utils.rgbToHex(ir, ig, ib));
 			}
 		}
-	}
-
-	function rgbToHex(r, g, b, a = 255):UInt {
-		return (a & 0xFF) << 24 | (r & 0xFF) << 16 | (g & 0xFF) << 8 | (b & 0xFF);
 	}
 	
 	function color(r:Ray, world:Hitable):Vec3 {
 		var rec:HitRecord = world.hit(r, 0.001, Math.POSITIVE_INFINITY);
 		if (rec != null) {
-			var target:Vec3 = rec.p + rec.normal + randomPointInUnitSphere();
+			var target:Vec3 = rec.p + rec.normal + Utils.randomPointInUnitSphere();
 			return color(new Ray(rec.p, target - rec.p), world) * 0.5;
 		} else {
 			var normalizedDir:Vec3 = Vec3.normalize(r.direction);
 			var t:Float = (normalizedDir.y + 1.0) * 0.5;
 			return new Vec3(1.0, 1.0, 1.0) * (1.0 - t) + new Vec3(0.5, 0.7, 1.0) * t;
-		}
-	}
-
-	function randomPointInUnitSphere():Vec3 {
-		var p:Vec3 = null;
-		do {
-			p = new Vec3(Math.random(), Math.random(), Math.random()) * 2.0 - new Vec3(1.0, 1.0, 1.0);
-		} while(p.lengthSquared >= 1.0);
-		return p;
-	}
-
-	function printTestImage() {
-		for (j in 0...ny) {
-			var v = ny - j;
-			for (i in 0...nx) {
-				var col = new Vec3(
-					i / nx,
-					v / ny,
-					0.2,
-					0.0
-				);
-				var ir:Int = Math.floor(255.99 * col.x);
-				var ig:Int = Math.floor(255.99 * col.y);
-				var ib:Int = Math.floor(255.99 * col.z);
-				data.setPixel32(i, j, rgbToHex(ir, ig, ib));
-			}
 		}
 	}
 }
