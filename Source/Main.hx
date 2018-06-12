@@ -49,6 +49,7 @@ class Main extends Sprite {
 					col += color(r, world);	
 				}
 				col /= cast(ns, Float);
+				col = new Vec3(Math.sqrt(col.x), Math.sqrt(col.y), Math.sqrt(col.z)); //Gamma correction (1/2)
 				var ir:Int = Math.floor(255.99 * col.x);
 				var ig:Int = Math.floor(255.99 * col.y);
 				var ib:Int = Math.floor(255.99 * col.z);
@@ -62,7 +63,7 @@ class Main extends Sprite {
 	}
 	
 	function color(r:Ray, world:Hitable):Vec3 {
-		var rec:HitRecord = world.hit(r, 0.0, Math.POSITIVE_INFINITY);
+		var rec:HitRecord = world.hit(r, 0.001, Math.POSITIVE_INFINITY);
 		if (rec != null) {
 			var target:Vec3 = rec.p + rec.normal + randomPointInUnitSphere();
 			return color(new Ray(rec.p, target - rec.p), world) * 0.5;
