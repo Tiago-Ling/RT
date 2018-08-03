@@ -33,7 +33,7 @@ class Main extends Sprite {
 	}
 
 	function generateSpheres() {
-		camera = new Camera();
+		camera = new Camera(new Vec3(-2, 2, 1), new Vec3(0, 0, -1), new Vec3(0, 1, 0), 30.0, cast(nx / ny, Float));
 		world = new HitableList();
 		world.add(new Sphere(new Vec3(0, 0, -1), 0.5, new Lambertian(new Vec3(0.1, 0.2, 0.5))));
 		world.add(new Sphere(new Vec3(0, -100.5, -1), 100, new Lambertian(new Vec3(0.8, 0.8, 0.0))));
