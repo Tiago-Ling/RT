@@ -33,7 +33,11 @@ class Main extends Sprite {
 	}
 
 	function generateSpheres() {
-		camera = new Camera(new Vec3(-2, 2, 1), new Vec3(0, 0, -1), new Vec3(0, 1, 0), 30.0, cast(nx / ny, Float));
+		var lookFrom = new Vec3(3, 3, 2);
+		var lookAt = new Vec3(0, 0, -1);
+		var distToFocus = (lookFrom - lookAt).length;
+		var aperture = 2.0;
+		camera = new Camera(lookFrom, lookAt, new Vec3(0, 1, 0), 20.0, cast(nx / ny, Float), aperture, distToFocus);
 		world = new HitableList();
 		world.add(new Sphere(new Vec3(0, 0, -1), 0.5, new Lambertian(new Vec3(0.1, 0.2, 0.5))));
 		world.add(new Sphere(new Vec3(0, -100.5, -1), 100, new Lambertian(new Vec3(0.8, 0.8, 0.0))));
