@@ -35,9 +35,9 @@ class Dieletric implements Material {
             reflectProb = 1.0;
         }
         if (Math.random() < reflectProb) {
-            scattered = new Ray(rec.p, reflected);
+            scattered = new Ray(rec.p, reflected, inRay.time);
         } else {
-            scattered = new Ray(rec.p, refracted);
+            scattered = new Ray(rec.p, refracted, inRay.time);
         }
         
         var scatterRec = new ScatterRecord();

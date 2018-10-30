@@ -13,7 +13,7 @@ class Lambertian implements Material {
     public function scatter(inRay:Ray, rec:HitRecord):ScatterRecord {
         var target:Vec3 = rec.p + rec.normal + Utils.randomPointInUnitSphere();
         var scatterRec = new ScatterRecord();
-        scatterRec.scattered = new Ray(rec.p, target - rec.p);
+        scatterRec.scattered = new Ray(rec.p, target - rec.p, inRay.time);
         scatterRec.attenuation = albedo;
         return scatterRec;
     }

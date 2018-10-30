@@ -12,7 +12,7 @@ class Metal implements Material {
     public function scatter(inRay:Ray, rec:HitRecord):ScatterRecord {
         var reflected:Vec3 = Vec3.reflect(Vec3.normalize(inRay.direction), rec.normal);
         var scatterRec = new ScatterRecord();
-        scatterRec.scattered = new Ray(rec.p, reflected + Utils.randomPointInUnitSphere() * fuzz);
+        scatterRec.scattered = new Ray(rec.p, reflected + Utils.randomPointInUnitSphere() * fuzz, inRay.time);
         scatterRec.attenuation = albedo;
         if (Vec3.dot(scatterRec.scattered.direction, rec.normal) > 0.0)
             return scatterRec;
